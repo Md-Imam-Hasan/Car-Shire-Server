@@ -34,6 +34,13 @@ client.connect(err => {
       })
   })
 
+  app.get('/service', (req, res) => {
+    serviceCollection.find({ _id: ObjectID(req.params.id) })
+      .toArray((err, documents) => {
+        res.send(documents);
+      })
+  })
+
   app.post('/addOrder', (req, res) => {
     orderCollection.insertOne(req.body)
       .then(result => {
@@ -56,14 +63,14 @@ client.connect(err => {
       })
   })
 
-  app.post('/addTestimonial', (req, res) => {
+  app.post('/addReview', (req, res) => {
     testimonialCollection.insertOne(req.body)
       .then(result => {
         res.send(result.insertedCount > 0)
       })
   })
 
-  app.get('/allTestimonial', (req, res) => {
+  app.get('/allReview', (req, res) => {
     testimonialCollection.find({})
       .toArray((err, documents) => {
         res.send(documents);
