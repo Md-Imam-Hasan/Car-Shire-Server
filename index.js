@@ -16,18 +16,13 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 client.connect(err => {
   const serviceCollection = client.db("car-shire").collection("services");
   const orderCollection = client.db("car-shire").collection("orders");
+  const testimonialCollection = client.db("car-shire").collection("testimonials");
+  const adminCollection = client.db("car-shire").collection("admins");
 
   app.post('/addService', (req, res) => {
     serviceCollection.insertOne(req.body)
       .then(result => {
         console.log(result);
-        res.send(result.insertedCount > 0)
-      })
-  })
-
-  app.post('/addOrder', (req, res) => {
-    orderCollection.insertOne(req.body)
-      .then(result => {
         res.send(result.insertedCount > 0)
       })
   })
@@ -39,11 +34,54 @@ client.connect(err => {
       })
   })
 
+  app.post('/addOrder', (req, res) => {
+    orderCollection.insertOne(req.body)
+      .then(result => {
+        res.send(result.insertedCount > 0)
+      })
+  })
+
+  app.get('/allOrder', (req, res) => {
+    orderCollection.find({})
+      .toArray((err, documents) => {
+        res.send(documents);
+      })
+  })
+
   app.get('/orders', (req, res) => {
     const queryEmail = req.query.email;
     orderCollection.find({ email: queryEmail })
       .toArray((err, documents) => {
         res.send(documents);
+      })
+  })
+
+  app.post('/addTestimonial', (req, res) => {
+    testimonialCollection.insertOne(req.body)
+      .then(result => {
+        res.send(result.insertedCount > 0)
+      })
+  })
+
+  app.get('/allTestimonial', (req, res) => {
+    testimonialCollection.find({})
+      .toArray((err, documents) => {
+        res.send(documents);
+      })
+  })
+
+  app.post('/addAdmin', (req, res) => {
+    adminCollection.insertOne(req.body)
+      .then(result => {
+        res.send(result.insertedCount > 0)
+      })
+  })
+
+  app.get('/admin', (req, res) => {
+    const queryEmail = req.query.email;
+    adminCollection.find({ email: queryEmail })
+      .toArray((err, documents) => {
+        res.send(documents.length > 0);
       })
   })
 
