@@ -34,7 +34,7 @@ client.connect(err => {
       })
   })
 
-  app.get('/service', (req, res) => {
+  app.get('/service/:id', (req, res) => {
     serviceCollection.find({ _id: ObjectID(req.params.id) })
       .toArray((err, documents) => {
         res.send(documents);
