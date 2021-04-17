@@ -94,9 +94,6 @@ client.connect(err => {
 
 });
 
-
-
-
 app.get('/', (req, res) => {
   res.send("hello from db it's working working")
 })
