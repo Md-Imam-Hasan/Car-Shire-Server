@@ -63,6 +63,15 @@ client.connect(err => {
       })
   })
 
+  app.patch('/update/:id', (req, res) => {
+    orderCollection.updateOne({ _id: ObjectId(req.params.id) }, {
+      $set: { status: req.body.status }
+    })
+      .then(result => {
+        res.send(result.modifiedCount > 0)
+      })
+  })
+
   app.post('/addReview', (req, res) => {
     testimonialCollection.insertOne(req.body)
       .then(result => {
